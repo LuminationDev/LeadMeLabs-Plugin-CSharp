@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace leadme_api
 {
@@ -45,11 +46,13 @@ namespace leadme_api
 
     /// <summary>
     /// An action to be performed on a particular scene. The name is how a user will see it and the trigger is how the project will
-    /// interpret the action.
+    /// interpret the action. The extra variable is for any additional information that may be required for a particular project.
+    /// This may include: file type, video duration etc..
     /// </summary>
     public class Action
     {
         public string name { get; set; }
         public string trigger { get; set; }
+        public JArray extra { get; set; }
     }
 }

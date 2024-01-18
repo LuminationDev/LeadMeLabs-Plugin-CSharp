@@ -20,13 +20,13 @@
     public delegate void PauseCallBack();
 
     /// <summary>
-    /// A callback that is responsbile for resuming a paused session that
+    /// A callback that is responsible for resuming a paused session that
     /// is currently running.
     /// </summary>
     public delegate void ResumeCallBack();
 
     /// <summary>
-    /// A callback that is responsible for gently exiting an applicaitons as
+    /// A callback that is responsible for gently exiting an applications as
     /// another developer intended.
     /// </summary>
     public delegate void ShutdownCallBack();
