@@ -80,7 +80,7 @@ namespace leadme_api
 
         public static async Task SendToClient(string json)
         {
-            var bytes = Encoding.UTF8.GetBytes(json);
+            var bytes = Encoding.Unicode.GetBytes(json);
             if (_pipe is null || !_pipe.CanWrite)
                 return;
             try
@@ -105,7 +105,7 @@ namespace leadme_api
                     var buffer = new byte[1024];
                     _pipe.WaitForConnection();
                     var len = _pipe.Read(buffer, 0, buffer.Length);
-                    return Encoding.UTF8.GetString(buffer, 0, len);
+                    return Encoding.Unicode.GetString(buffer, 0, len);
                 });
             }
             catch (Exception e)

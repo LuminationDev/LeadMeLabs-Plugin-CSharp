@@ -58,7 +58,7 @@ namespace leadme_api
         {
             if (_client == null)
                 throw new InvalidOperationException();
-            var bytes = Encoding.UTF8.GetBytes(message);
+            var bytes = Encoding.Unicode.GetBytes(message);
             await _client.WriteAsync(bytes, 0, bytes.Length);
             await _client.FlushAsync();
         }
@@ -72,7 +72,7 @@ namespace leadme_api
             if (_receiveTimeout > 0)
                 cancel.CancelAfter(_receiveTimeout);
             var len = await _client.ReadAsync(buffer, 0, buffer.Length, cancel.Token);
-            return Encoding.UTF8.GetString(buffer, 0, len);
+            return Encoding.Unicode.GetString(buffer, 0, len);
         }
     }
 }

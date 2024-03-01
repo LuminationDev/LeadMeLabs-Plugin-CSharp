@@ -25,7 +25,7 @@ namespace leadme_api
         /// before reset the pipe for the next connection.
         /// </summary>
         /// <param name="logHandler">A callback to handle status messages</param>
-        /// <param name="handler"><A callback to handle incoming messages from a pipe client</param>
+        /// <param name="handler">A callback to handle incoming messages from a pipe client</param>
         public static void Run(LogCallBack logHandler, ActionCallBack handler)
         {
             _logHandler = logHandler;
@@ -54,7 +54,7 @@ namespace leadme_api
 
         public static async Task SendToClient(string json)
         {
-            var bytes = Encoding.UTF8.GetBytes(json);
+            var bytes = Encoding.Unicode.GetBytes(json);
             _logHandler($"Sending bytes: {bytes.Length}");
 
             if (_pipe is null || !_pipe.CanWrite)
@@ -78,7 +78,6 @@ namespace leadme_api
         {
             try
             {
-                //TODO test the new transmission mode with existing applications
                 //Pipe transmission mode needs to be set to Message in order to handle C++ connections
                 _pipe = new NamedPipeServerStream(PipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Message);
                 return await Task.Run(() =>
@@ -88,7 +87,7 @@ namespace leadme_api
                     _pipe.WaitForConnection();
                     var buffer = new byte[8192];
                     var len = _pipe.Read(buffer, 0, buffer.Length);
-                    return Encoding.UTF8.GetString(buffer, 0, len);
+                    return Encoding.Unicode.GetString(buffer, 0, len);
                 });
             }
             catch (Exception e)

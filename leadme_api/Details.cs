@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -20,7 +21,9 @@ namespace leadme_api
         /// <returns>A stringified version of the class.</returns>
         public static string Serialize(Details details)
         {
-            return $"details,{JsonConvert.SerializeObject(details, Formatting.Indented)}";
+            string jsonString = JsonConvert.SerializeObject(details, Formatting.Indented);
+            byte[] unicodeBytes = Encoding.Unicode.GetBytes(jsonString);
+            return $"details,{Encoding.Unicode.GetString(unicodeBytes)}";
         }
     }
 
