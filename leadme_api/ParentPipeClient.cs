@@ -13,12 +13,12 @@ namespace leadme_api
 
         private static NamedPipeClientStream _client;
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         private static LogCallBack _logHandler;
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         //A timeout in seconds for the pipe to wait when connecting to a server
-        private static int _receiveTimeout = 5;
+        private static int _receiveTimeout = 5000;
 
         public static void Send(LogCallBack logHandler, string message)
         {
@@ -34,12 +34,15 @@ namespace leadme_api
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e);
                     _logHandler(e.Message);
                 }
                 finally
                 {
                     if (_client != null)
-                        _client.Dispose();
+                    {
+                       _client.Dispose();
+                    }
 
                     _logHandler("Message Sent");
                 }
@@ -56,7 +59,7 @@ namespace leadme_api
         {
             if (_client == null)
                 throw new InvalidOperationException();
-            var bytes = Encoding.UTF8.GetBytes(message);
+            var bytes = Encoding.Unicode.GetBytes(message);
             await _client.WriteAsync(bytes, 0, bytes.Length);
             await _client.FlushAsync();
         }
@@ -74,7 +77,7 @@ namespace leadme_api
             try
             {
                 var len = await _client.ReadAsync(buffer, 0, buffer.Length, cancel.Token);
-                return Encoding.UTF8.GetString(buffer, 0, len);
+                return Encoding.Unicode.GetString(buffer, 0, len);
             }
             catch (OperationCanceledException)
             {
